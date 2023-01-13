@@ -1,6 +1,6 @@
 # AKAGoogleAdMob
 
-##Swift Package Manager
+## Swift Package Manager
 
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
 
