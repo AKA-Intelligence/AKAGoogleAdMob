@@ -1,10 +1,3 @@
-//public struct AKAGoogleAdMob {
-//    public private(set) var text = "Hello, World!"
-//
-//    public init() {
-//    }
-//}
-
 import GoogleMobileAds
 import SwiftUI
 import UIKit
