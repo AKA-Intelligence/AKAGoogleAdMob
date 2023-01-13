@@ -13,7 +13,7 @@ dependencies: [
 ```
 
 ## Usage
-```swift
+```XML
 <key>GADApplicationIdentifier</key>
 <string>ca-app-pub-3940256099942544~1458002511</string>
 <key>SKAdNetworkItems</key>
