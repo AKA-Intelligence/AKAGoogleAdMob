@@ -5,8 +5,6 @@
 //  Created by Yoonsuk Kim on 2023/01/13.
 //
 
-import Foundation
-
 import GoogleMobileAds
 import Foundation
 
