@@ -13,7 +13,13 @@ import UIKit
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let type: GoogleAdMobType
     public let tapDismiss: () -> Void
-
+    public init(
+        type: GoogleAdMobType,
+        tapDismiss: @escaping () -> Void
+    ) {
+        self.type = type
+        self.tapDismiss = tapDismiss
+    }
 
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(type)
@@ -38,8 +44,6 @@ public struct AdvertisementView: UIViewControllerRepresentable {
             advertisementView = view
         }
     }
-
-    public typealias UIViewControllerType = AdvertisementViewController
 }
 
 public protocol AdvertisementViewControllerDelegate: AnyObject {
