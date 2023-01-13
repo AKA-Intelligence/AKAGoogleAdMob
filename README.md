@@ -12,7 +12,10 @@ dependencies: [
 ]
 ```
 
-## Usage
+## Guide
+
+add this code below to your info plist
+
 ```XML
 <key>GADApplicationIdentifier</key>
 <string>ca-app-pub-3940256099942544~1458002511</string>
