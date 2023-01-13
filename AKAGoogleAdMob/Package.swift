@@ -22,9 +22,11 @@ let package = Package(
         .target(
             name: "AKAGoogleAdMob",
             dependencies: [
-                .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads")
+                .product(
+                    name: "GoogleMobileAds",
+                    package: "swift-package-manager-google-mobile-ads"
+                )
             ]),
-        
         .testTarget(
             name: "AKAGoogleAdMobTests",
             dependencies: ["AKAGoogleAdMob"]),
