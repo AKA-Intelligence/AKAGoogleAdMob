@@ -15,20 +15,20 @@ public struct AdvertisementView: UIViewControllerRepresentable {
     public let tapDismiss: () -> Void
 
 
-    func makeUIViewController(context: Context) -> AdvertisementViewController {
+    public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(type)
         viewController.delegate = context.coordinator
         return viewController
     }
 
-    func updateUIViewController(_: AdvertisementViewController, context _: Context) {}
+    public func updateUIViewController(_: AdvertisementViewController, context _: Context) {}
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    final class Coordinator: NSObject, AdvertisementViewControllerDelegate {
-        func adDidDismissFullScreenContent() {
+    final public class Coordinator: NSObject, AdvertisementViewControllerDelegate {
+        public func adDidDismissFullScreenContent() {
             advertisementView.tapDismiss()
         }
 
@@ -39,14 +39,14 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         }
     }
 
-    typealias UIViewControllerType = AdvertisementViewController
+    public typealias UIViewControllerType = AdvertisementViewController
 }
 
-protocol AdvertisementViewControllerDelegate: AnyObject {
+public protocol AdvertisementViewControllerDelegate: AnyObject {
     func adDidDismissFullScreenContent()
 }
 
-class AdvertisementViewController: UIViewController {
+public class AdvertisementViewController: UIViewController {
 
     weak var delegate: AdvertisementViewControllerDelegate?
 
@@ -61,7 +61,7 @@ class AdvertisementViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         configureManager()
     }
@@ -82,17 +82,17 @@ class AdvertisementViewController: UIViewController {
 //MARK: - GADFullScreenContentDelegate
 extension AdvertisementViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
-    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+    public func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         print("Ad did fail to present full screen content.")
     }
 
     /// Tells the delegate that the ad will present full screen content.
-    func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+    public func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad will present full screen content.")
     }
 
     /// Tells the delegate that the ad dismissed full screen content.
-    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
+    public func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         delegate?.adDidDismissFullScreenContent()
         interstitial = nil
     }
