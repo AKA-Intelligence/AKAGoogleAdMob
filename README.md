@@ -241,6 +241,8 @@ Add this code below to your info plist
 </blockquote></details>
 
 <details><summary>Setting on AppDelegate</summary><blockquote>
+    You dont need to add GoogleMobilesAds SDK.
+    As soon as you add AKAGoogleAdMob SDK, your project will have GoogleMobilesAds SDK automatically.
     
 ```Swift
 import GoogleMobileAds
