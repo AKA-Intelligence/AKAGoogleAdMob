@@ -11,15 +11,22 @@ dependencies: [
     .package(url: "https://github.com/AKA-Intelligence/AKAGoogleAdMob.git")
 ]
 ```
-
-<details>
-  <summary>Setting Guideline</summary>
-
-add this code below to your info plist
+<details><summary>Setting Guideline</summary><blockquote>
+  <details><summary>Get App ID</summary><blockquote>
+<!-- <details> -->
+<!--   <summary>Setting Guideline</summary> -->
+    
+Get your App ID like the following image
+    
+![스크린샷 2023-01-16 오전 10 39 43](https://user-images.githubusercontent.com/101777374/212581468-a0e9e1b0-f12e-4331-87ac-ea7fe76425b5.png)
+   </blockquote></details>
+      
+<details><summary>Setting Info plist</summary><blockquote>
+Add this code below to your info plist
 
 ```XML
 <key>GADApplicationIdentifier</key>
-<string> PUT YOUR OWN APP ID </string>
+<string> PUT YOUR OWN APP ID HERE </string>
 <key>SKAdNetworkItems</key>
   <array>
     <dict>
@@ -224,6 +231,7 @@ add this code below to your info plist
     </dict>
   </array>
 ```
+</blockquote></details>
 
 ```Swift
 import GoogleMobileAds
