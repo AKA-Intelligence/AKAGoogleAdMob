@@ -279,6 +279,7 @@ For test you can use this Ad unit: "ca-app-pub-3940256099942544/4411468910"
     
 </blockquote></details>
 
++ For SwiftUI
 ```swift
 
 AdvertisementView(
