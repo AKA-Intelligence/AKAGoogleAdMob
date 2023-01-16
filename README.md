@@ -19,7 +19,7 @@ add this code below to your info plist
 
 ```XML
 <key>GADApplicationIdentifier</key>
-<string>ca-app-pub-3940256099942544~1458002511</string>
+<string> PUT YOUR OWN APP ID </string>
 <key>SKAdNetworkItems</key>
   <array>
     <dict>
@@ -241,6 +241,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 ```
+</details>
 
 ### Setting
 https://developers.google.com/admob/ios/quick-start#update_your_infoplist
