@@ -260,12 +260,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ### Usage
 add following code to where you want to show addvertisement
-<details><summary>Get Ad unit</summary>
+<details><summary>Get App ID</summary><blockquote>
     
     ![스크린샷 2023-01-16 오전 11 27 27](https://user-images.githubusercontent.com/101777374/212585882-35a4d055-3dc2-47a6-a40a-7a405dd89d84.png)
 
-    
-</details>
+</blockquote></details>
 
 ```swift
 
