@@ -12,6 +12,8 @@ dependencies: [
 ]
 ```
 
+<details>
+  <summary>Guide</summary>
 ## Guide
 
 add this code below to your info plist
