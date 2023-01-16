@@ -4,18 +4,18 @@ import UIKit
 
 @available(iOS 13.0, *)
 public struct AdvertisementView: UIViewControllerRepresentable {
-    public let type: GoogleAdMobType
+    public let id: String
     public let tapDismiss: () -> Void
     public init(
-        type: GoogleAdMobType,
+        for id: String,
         tapDismiss: @escaping () -> Void
     ) {
-        self.type = type
+        self.id = id
         self.tapDismiss = tapDismiss
     }
 
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
-        let viewController = AdvertisementViewController(type)
+        let viewController = AdvertisementViewController(id)
         viewController.delegate = context.coordinator
         return viewController
     }
@@ -47,10 +47,10 @@ public class AdvertisementViewController: UIViewController {
 
     weak var delegate: AdvertisementViewControllerDelegate?
 
-    private let type: GoogleAdMobType
+    private let id: String
 
-    init(_ type: GoogleAdMobType) {
-        self.type = type
+    init(_ id: String) {
+        self.id = id
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,11 +67,17 @@ public class AdvertisementViewController: UIViewController {
 
     private func configureManager() {
         let manager = GoogleAdMobManager()
-        manager.create(type) {[weak self] ad in
+        manager.create(with: id) {[weak self] result in
             guard let self = self else { return }
-            self.interstitial = ad
-            self.interstitial?.present(fromRootViewController: self)
-            self.interstitial?.fullScreenContentDelegate = self
+            switch result {
+            case .success(let ad):
+                self.interstitial = ad
+                self.interstitial?.present(fromRootViewController: self)
+                self.interstitial?.fullScreenContentDelegate = self
+                
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }
