@@ -258,9 +258,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </blockquote></details>
         
 
-### Qick Start
+### Usage
+add following code to where you want to show addvertisement
+<details><summary>Get Ad unit</summary>
+    ![스크린샷 2023-01-16 오전 11 27 27](https://user-images.githubusercontent.com/101777374/212585775-0848fb1e-a748-4085-b660-21b5893c2524.png)
+</details>
+
 ```swift
 
-
+AdvertisementView(
+   for: "Add ad unit here",
+   tapDismiss: {
+       print("Dismiss action")
+   }
+)
 
 ```
