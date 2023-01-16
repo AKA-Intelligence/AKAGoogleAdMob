@@ -30,6 +30,8 @@ Get your App ID like the following image
 Add this code below to your info plist
 
 ```XML
+<key>GADIsAdManagerApp</key>
+<true/>
 <key>GADApplicationIdentifier</key>
 <string> PUT YOUR OWN APP ID HERE </string>
 <key>SKAdNetworkItems</key>
