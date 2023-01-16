@@ -250,9 +250,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 ```
-     </blockquote></details>
 </details>
-
+</blockquote></details>
+        
 ### Setting
 https://developers.google.com/admob/ios/quick-start#update_your_infoplist
 
