@@ -272,15 +272,17 @@ you can get Ad unit from here
     
 ![스크린샷 2023-01-16 오전 11 27 27](https://user-images.githubusercontent.com/101777374/212585882-35a4d055-3dc2-47a6-a40a-7a405dd89d84.png)
 
+For test you can use this Ad unit: "ca-app-pub-3940256099942544/4411468910"    
+    
 </blockquote></details>
 
 ```swift
 
 AdvertisementView(
-   for: "Add ad unit here",
-   tapDismiss: {
-       print("Dismiss action")
-   }
-)
+    for: "Put your Ad unit here",
+    tapDismiss: {
+       self.isAdvertisementOpen = false
+})
+.hide(!isAdvertisementOpen)
 
 ```
