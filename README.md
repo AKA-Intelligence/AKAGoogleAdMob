@@ -1,5 +1,7 @@
 # AKAGoogleAdMob
 
+***
+
 ## Swift Package Manager
 
 The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler.
@@ -12,9 +14,10 @@ dependencies: [
 ]
 ```
 
-
+***
 
 ## Setting
+follow the guideline in order to do the setting
 <details><summary>Setting Guideline</summary><blockquote>
 
 <details><summary>Get App ID</summary><blockquote>
@@ -263,7 +266,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </blockquote></details>
 </blockquote></details>
         
-
+***
 
 ## Usage
 add following code to where you want to show addvertisement
@@ -287,6 +290,8 @@ AdvertisementView(
 
 ```
 
-This SDK is created and maintain by UmaKimchi.
+***
 
-If you have any question, please contact Uma Kim in office or here(uma@akaai.kr)
+**This SDK is created and being maintained by UmaKimchi.**
+
+**If you have any question, please contact Uma Kim in the office or here(uma@akaai.kr)**
