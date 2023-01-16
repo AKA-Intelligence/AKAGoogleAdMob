@@ -12,7 +12,9 @@ dependencies: [
 ]
 ```
 
-### Setting
+
+
+## Setting
 <details><summary>Setting Guideline</summary><blockquote>
 
 <details><summary>Get App ID</summary><blockquote>
@@ -258,7 +260,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 </blockquote></details>
         
 
-### Usage
+
+## Usage
 add following code to where you want to show addvertisement
 <details><summary>Get Ad unit</summary><blockquote>
 you can get Ad unit from here
