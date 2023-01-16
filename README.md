@@ -287,5 +287,6 @@ AdvertisementView(
 
 ```
 
-This SDK is created and maintain by UmaKimchi.\n
+This SDK is created and maintain by UmaKimchi.
+
 If you have any question, please contact Uma Kim in office or here(uma@akaai.kr)
