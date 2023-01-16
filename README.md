@@ -233,7 +233,7 @@ Add this code below to your info plist
 ```
 </blockquote></details>
 
-    <details><summary>Setting on AppDelegate</summary><blockquote>
+<details><summary>Setting on AppDelegate</summary><blockquote>
 ```Swift
 import GoogleMobileAds
 
@@ -250,8 +250,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 ```
-</details>
 </blockquote></details>
+</details>
+
         
 ### Setting
 https://developers.google.com/admob/ios/quick-start#update_your_infoplist
