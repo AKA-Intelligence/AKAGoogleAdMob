@@ -11,6 +11,8 @@ dependencies: [
     .package(url: "https://github.com/AKA-Intelligence/AKAGoogleAdMob.git")
 ]
 ```
+
+### Setting
 <details><summary>Setting Guideline</summary><blockquote>
 
 <details><summary>Get App ID</summary><blockquote>
@@ -253,11 +255,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 ```
 </blockquote></details>
-<!-- </details> -->
 </blockquote></details>
         
-### Setting
-https://developers.google.com/admob/ios/quick-start#update_your_infoplist
 
 ### Qick Start
 ```swift
