@@ -233,6 +233,7 @@ Add this code below to your info plist
 ```
 </blockquote></details>
 
+    <details><summary>Setting on AppDelegate</summary><blockquote>
 ```Swift
 import GoogleMobileAds
 
@@ -249,6 +250,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 ```
+     </blockquote></details>
 </details>
 
 ### Setting
