@@ -13,8 +13,7 @@ dependencies: [
 ```
 
 <details>
-  <summary>Guide</summary>
-## Guide
+  <summary>Setting Guideline</summary>
 
 add this code below to your info plist
 
