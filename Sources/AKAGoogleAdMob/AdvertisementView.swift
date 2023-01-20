@@ -94,6 +94,7 @@ public class AdvertisementViewController: UIViewController {
                 interval: .seconds(timeable.intervalSeconds)
             ) { [weak self] in
                 self?.delegate?.automaticallyShowAd()
+                self?.configureManager()
             }
             .store(in: &cancellables)
     }
