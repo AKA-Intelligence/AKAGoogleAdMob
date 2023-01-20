@@ -3,23 +3,34 @@ import SwiftUI
 import UIKit
 import Combine
 
+public protocol AdvertisementTimeable {
+    var showAfter: Date { get set }
+    var intervalSeconds: Int { get set }
+}
+
 @available(iOS 13.0, *)
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let id: String
-    public var showAd: AnyPublisher<Bool, Never>
+    public let advertisementTimeable: AdvertisementTimeable?
+    public let automaticallyShowAd: (() -> Void)?
     public let tapDismiss: () -> Void
     public init(
         for id: String,
-        showAd: AnyPublisher<Bool, Never>,
+        advertisementTimeable: AdvertisementTimeable? = nil,
+        automaticallyShowAd: (() -> Void)? = nil,
         tapDismiss: @escaping () -> Void
     ) {
         self.id = id
-        self.showAd = showAd
+        self.advertisementTimeable = advertisementTimeable
+        self.automaticallyShowAd = automaticallyShowAd
         self.tapDismiss = tapDismiss
     }
 
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
-        let viewController = AdvertisementViewController(id, showAdPublisher: showAd)
+        let viewController = AdvertisementViewController(
+            id,
+            advertisementTimeable: advertisementTimeable
+        )
         viewController.delegate = context.coordinator
         return viewController
     }
@@ -31,6 +42,10 @@ public struct AdvertisementView: UIViewControllerRepresentable {
     }
 
     final public class Coordinator: NSObject, AdvertisementViewControllerDelegate {
+        public func automaticallyShowAd() {
+            advertisementView.automaticallyShowAd?()
+        }
+        
         // MARK: - AdvertisementViewControllerDelegate
         public func adDidDismissFullScreenContent() {
             advertisementView.tapDismiss()
@@ -46,6 +61,7 @@ public struct AdvertisementView: UIViewControllerRepresentable {
 
 public protocol AdvertisementViewControllerDelegate: AnyObject {
     func adDidDismissFullScreenContent()
+    func automaticallyShowAd()
 }
 
 @available(iOS 13.0, *)
@@ -54,13 +70,16 @@ public class AdvertisementViewController: UIViewController {
     weak var delegate: AdvertisementViewControllerDelegate?
 
     private let id: String
-    private let showAdPublisher: AnyPublisher<Bool, Never>
+    private let advertisementTimeable: AdvertisementTimeable?
     private var cancellables: Set<AnyCancellable>
     
     @available(iOS 13.0, *)
-    init(_ id: String, showAdPublisher: AnyPublisher<Bool, Never>) {
+    init(
+        _ id: String,
+        advertisementTimeable: AdvertisementTimeable?
+    ) {
         self.id = id
-        self.showAdPublisher = showAdPublisher
+        self.advertisementTimeable = advertisementTimeable
         self.cancellables = .init()
         super.init(nibName: nil, bundle: nil)
         
@@ -68,14 +87,17 @@ public class AdvertisementViewController: UIViewController {
     }
     
     private func bind() {
-        showAdPublisher
-            .sink {[weak self] show in
-                if show {
-                    self?.configureManager()
-                }
-            }
-            .store(in: &cancellables)
+        guard let timeable = advertisementTimeable else { return }
+        loop.schedule(
+            after: .init(timeable.showAfter),
+            interval: .seconds(timeable.intervalSeconds)
+        ) { [weak self] in
+            self?.delegate?.automaticallyShowAd()
+        }
+        .store(in: &cancellables)
     }
+    
+    private let loop = RunLoop.main
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -83,7 +105,9 @@ public class AdvertisementViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-//        configureManager()
+        if advertisementTimeable != nil {
+            configureManager()
+        }
     }
 
     private var interstitial: GADInterstitialAd?
