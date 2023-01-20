@@ -26,9 +26,16 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
         print(advertisementTimeable?.showAfter)
         print(now)
-        if advertisementTimeable?.showAfter == now {
-            dismiss(false)
+        if let showAfter = advertisementTimeable?.showAfter {
+            print(showAfter)
+            print(now)
+            if showAfter == now {
+                dismiss(false)
+            }
         }
+//        if advertisementTimeable?.showAfter == now {
+//            dismiss(false)
+//        }
         
         //타이머 셋팅이 안 되어 있다면, 바로 보여준다.
         if advertisementTimeable == nil {
