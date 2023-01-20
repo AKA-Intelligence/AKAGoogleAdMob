@@ -33,22 +33,22 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         self.dismiss = dismiss
         
         //만약 지금 보여줘야한다면, 광고를 바로 보여준다.
-        let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
-        print(advertisementTimeable?.showAfter)
-        print(now)
-        if let showAfter = advertisementTimeable?.showAfter {
-            print(showAfter)
-            print(now)
-            if showAfter == now {
-                dismiss(false)
-            }
-        }
+//        let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
+//        print(advertisementTimeable?.showAfter)
+//        print(now)
+//        if let showAfter = advertisementTimeable?.showAfter {
+//            print(showAfter)
+//            print(now)
+//            if showAfter == now {
+//                dismiss(false)
+//            }
+//        }
 //        if advertisementTimeable?.showAfter == now {
 //            dismiss(false)
 //        }
         
         //타이머 셋팅이 안 되어 있다면, 광고를 바로 보여준다.
-        else if advertisementTimeable == nil {
+        if advertisementTimeable == nil {
             dismiss(false)
         }
         
