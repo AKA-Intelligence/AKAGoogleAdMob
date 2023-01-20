@@ -4,8 +4,18 @@ import UIKit
 import Combine
 
 public protocol AdvertisementTimeable {
-    var showAfter: Date { get set }
+    var showAfterSeconds: Int { get set }
     var intervalSeconds: Int { get set }
+}
+
+extension AdvertisementTimeable {
+    var showAfter: Date? {
+        Calendar.current.date(
+            byAdding: .second,
+            value: showAfterSeconds,
+            to: Date()
+        )
+    }
 }
 
 @available(iOS 13.0, *)
@@ -22,7 +32,7 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         self.advertisementTimeable = advertisementTimeable
         self.dismiss = dismiss
         
-        //만약 지금 보여줘야한다면, 바로 보여준다.
+        //만약 지금 보여줘야한다면, 광고를 바로 보여준다.
         let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
         print(advertisementTimeable?.showAfter)
         print(now)
@@ -37,9 +47,13 @@ public struct AdvertisementView: UIViewControllerRepresentable {
 //            dismiss(false)
 //        }
         
-        //타이머 셋팅이 안 되어 있다면, 바로 보여준다.
-        if advertisementTimeable == nil {
+        //타이머 셋팅이 안 되어 있다면, 광고를 바로 보여준다.
+        else if advertisementTimeable == nil {
             dismiss(false)
+        }
+        
+        else {
+            dismiss(true)
         }
     }
 
@@ -105,10 +119,13 @@ public class AdvertisementViewController: UIViewController {
     }
     
     private func bind() {
-        guard let timeable = advertisementTimeable else { return }
+        guard
+            let timeable = advertisementTimeable,
+            let dateNow = advertisementTimeable?.showAfter
+        else { return }
         loop
             .schedule(
-                after: .init(timeable.showAfter),
+                after: .init(dateNow),
                 interval: .seconds(timeable.intervalSeconds)
             ) { [weak self] in
                 self?.delegate?.automaticallyShowAd()
