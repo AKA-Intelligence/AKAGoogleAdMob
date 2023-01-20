@@ -88,13 +88,14 @@ public class AdvertisementViewController: UIViewController {
     
     private func bind() {
         guard let timeable = advertisementTimeable else { return }
-        loop.schedule(
-            after: .init(timeable.showAfter),
-            interval: .seconds(timeable.intervalSeconds)
-        ) { [weak self] in
-            self?.delegate?.automaticallyShowAd()
-        }
-        .store(in: &cancellables)
+        loop
+            .schedule(
+                after: .init(timeable.showAfter),
+                interval: .seconds(timeable.intervalSeconds)
+            ) { [weak self] in
+                self?.delegate?.automaticallyShowAd()
+            }
+            .store(in: &cancellables)
     }
     
     private let loop = RunLoop.main
@@ -105,7 +106,7 @@ public class AdvertisementViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        if advertisementTimeable != nil {
+        if advertisementTimeable == nil {
             configureManager()
         }
     }
