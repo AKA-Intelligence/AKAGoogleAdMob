@@ -23,7 +23,10 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         self.dismiss = dismiss
         
         //만약 지금 보여줘야한다면, 바로 보여준다.
-        if advertisementTimeable?.showAfter == Date() {
+        let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
+        print(advertisementTimeable?.showAfter)
+        print(now)
+        if advertisementTimeable?.showAfter == now {
             dismiss(false)
         }
         
