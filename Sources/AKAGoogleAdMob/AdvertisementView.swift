@@ -12,24 +12,31 @@ public protocol AdvertisementTimeable {
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let id: String
     public let advertisementTimeable: AdvertisementTimeable?
-    public let automaticallyShowAd: (() -> Void)?
-    public let tapDismiss: () -> Void
+    public let dismiss: (Bool) -> Void
     public init(
         for id: String,
         advertisementTimeable: AdvertisementTimeable? = nil,
-        automaticallyShowAd: (() -> Void)? = nil,
-        tapDismiss: @escaping () -> Void
+        dismiss: @escaping (Bool) -> Void
     ) {
         self.id = id
         self.advertisementTimeable = advertisementTimeable
-        self.automaticallyShowAd = automaticallyShowAd
-        self.tapDismiss = tapDismiss
+        self.dismiss = dismiss
+        
+        //만약 지금 보여줘야한다면, 바로 보여준다.
+        if advertisementTimeable?.showAfter == Date() {
+            dismiss(false)
+        }
+        
+        //타이머 셋팅이 안 되어 있다면, 바로 보여준다.
+        if advertisementTimeable == nil {
+            dismiss(false)
+        }
     }
 
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(
             id,
-            advertisementTimeable: advertisementTimeable
+            advertisementTimeable
         )
         viewController.delegate = context.coordinator
         return viewController
@@ -43,12 +50,13 @@ public struct AdvertisementView: UIViewControllerRepresentable {
 
     final public class Coordinator: NSObject, AdvertisementViewControllerDelegate {
         public func automaticallyShowAd() {
-            advertisementView.automaticallyShowAd?()
+//            advertisementView.automaticallyShowAd?()
+            advertisementView.dismiss(false)
         }
         
         // MARK: - AdvertisementViewControllerDelegate
         public func adDidDismissFullScreenContent() {
-            advertisementView.tapDismiss()
+            advertisementView.dismiss(true)
         }
 
         private let advertisementView: AdvertisementView
@@ -76,7 +84,7 @@ public class AdvertisementViewController: UIViewController {
     @available(iOS 13.0, *)
     init(
         _ id: String,
-        advertisementTimeable: AdvertisementTimeable?
+        _ advertisementTimeable: AdvertisementTimeable?
     ) {
         self.id = id
         self.advertisementTimeable = advertisementTimeable
