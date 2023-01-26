@@ -22,15 +22,14 @@ extension AdvertisementTimeable {
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let id: String
 //    public let advertisementTimeable: AdvertisementTimeable?
-    @Binding public var showAd: Bool
+    public var showAdSubject: PassthroughSubject<Bool, Never>
     public let adVertisementIsClosed: (Bool) -> Void
     
-    public init(id: String, showAd: Binding<Bool>, adVertisementIsClosed: @escaping (Bool) -> Void) {
+    public init(id: String, showAdSubject: PassthroughSubject<Bool, Never>, adVertisementIsClosed: @escaping (Bool) -> Void) {
         self.id = id
-        self._showAd = showAd
+        self.showAdSubject = showAdSubject
         self.adVertisementIsClosed = adVertisementIsClosed
         
-        opacity(0.5)
     }
     
 //    public init(
@@ -70,7 +69,7 @@ public struct AdvertisementView: UIViewControllerRepresentable {
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(
             id,
-            $showAd
+            showAdSubject.eraseToAnyPublisher()
         )
         viewController.delegate = context.coordinator
         return viewController
@@ -113,23 +112,29 @@ public class AdvertisementViewController: UIViewController {
 
     private let id: String
 //    private let advertisementTimeable: AdvertisementTimeable?
-    @Binding private var showAd: Bool
+    private var showAdPublisher: AnyPublisher<Bool, Never>
     private var cancellables: Set<AnyCancellable>
     
     @available(iOS 13.0, *)
     init(
         _ id: String,
 //        _ advertisementTimeable: AdvertisementTimeable?
-        _ showAd: Binding<Bool>
+        _ showAdPublisher: AnyPublisher<Bool, Never>
     ) {
         self.id = id
 //        self.advertisementTimeable = advertisementTimeable
-        self._showAd = showAd
+        self.showAdPublisher = showAdPublisher
         self.cancellables = .init()
         super.init(nibName: nil, bundle: nil)
         
 //        bind()
-       
+        showAdPublisher.sink {[weak self] needToShow in
+            guard let self = self else { return }
+            if needToShow {
+                self.configureManager()
+            }
+        }
+        .store(in: &cancellables)
     }
     
 //    private func bind() {
@@ -156,12 +161,6 @@ public class AdvertisementViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-//        if advertisementTimeable == nil {
-            configureManager()
-//        }
-
-        print(showAd)
-        print($showAd)
     }
 
     private var interstitial: GADInterstitialAd?
