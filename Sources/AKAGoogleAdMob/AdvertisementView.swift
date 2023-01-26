@@ -24,6 +24,13 @@ public struct AdvertisementView: UIViewControllerRepresentable {
 //    public let advertisementTimeable: AdvertisementTimeable?
     @Binding public var showAd: Bool
     public let adVertisementIsClosed: (Bool) -> Void
+    
+    public init(id: String, showAd: Binding<Bool>, adVertisementIsClosed: @escaping (Bool) -> Void) {
+        self.id = id
+        self._showAd = showAd
+        self.adVertisementIsClosed = adVertisementIsClosed
+    }
+    
 //    public init(
 //        for id: String,
 //        advertisementTimeable: AdvertisementTimeable? = nil,
