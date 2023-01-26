@@ -21,46 +21,47 @@ extension AdvertisementTimeable {
 @available(iOS 13.0, *)
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let id: String
-    public let advertisementTimeable: AdvertisementTimeable?
-    public let dismiss: (Bool) -> Void
-    public init(
-        for id: String,
-        advertisementTimeable: AdvertisementTimeable? = nil,
-        dismiss: @escaping (Bool) -> Void
-    ) {
-        self.id = id
-        self.advertisementTimeable = advertisementTimeable
-        self.dismiss = dismiss
-        
-        //만약 지금 보여줘야한다면, 광고를 바로 보여준다.
-//        let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
-//        print(advertisementTimeable?.showAfter)
-//        print(now)
-//        if let showAfter = advertisementTimeable?.showAfter {
-//            print(showAfter)
-//            print(now)
-//            if showAfter == now {
-//                dismiss(false)
-//            }
-//        }
-//        if advertisementTimeable?.showAfter == now {
+//    public let advertisementTimeable: AdvertisementTimeable?
+    @Binding public var showAd: Bool
+    public let adVertisementIsClosed: (Bool) -> Void
+//    public init(
+//        for id: String,
+//        advertisementTimeable: AdvertisementTimeable? = nil,
+//        dismiss: @escaping (Bool) -> Void
+//    ) {
+//        self.id = id
+//        self.advertisementTimeable = advertisementTimeable
+//        self.dismiss = dismiss
+//
+//        //만약 지금 보여줘야한다면, 광고를 바로 보여준다.
+////        let now = Calendar.current.date(byAdding: .second, value: 0, to: Date())!
+////        print(advertisementTimeable?.showAfter)
+////        print(now)
+////        if let showAfter = advertisementTimeable?.showAfter {
+////            print(showAfter)
+////            print(now)
+////            if showAfter == now {
+////                dismiss(false)
+////            }
+////        }
+////        if advertisementTimeable?.showAfter == now {
+////            dismiss(false)
+////        }
+//
+//        //타이머 셋팅이 안 되어 있다면, 광고를 바로 보여준다.
+//        if advertisementTimeable == nil {
 //            dismiss(false)
 //        }
-        
-        //타이머 셋팅이 안 되어 있다면, 광고를 바로 보여준다.
-        if advertisementTimeable == nil {
-            dismiss(false)
-        }
-        
-        else {
-            dismiss(true)
-        }
-    }
+//
+//        else {
+//            dismiss(true)
+//        }
+//    }
 
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(
             id,
-            advertisementTimeable
+            $showAd
         )
         viewController.delegate = context.coordinator
         return viewController
@@ -75,12 +76,12 @@ public struct AdvertisementView: UIViewControllerRepresentable {
     final public class Coordinator: NSObject, AdvertisementViewControllerDelegate {
         public func automaticallyShowAd() {
 //            advertisementView.automaticallyShowAd?()
-            advertisementView.dismiss(false)
+            advertisementView.adVertisementIsClosed(false)
         }
         
         // MARK: - AdvertisementViewControllerDelegate
         public func adDidDismissFullScreenContent() {
-            advertisementView.dismiss(true)
+            advertisementView.adVertisementIsClosed(true)
         }
 
         private let advertisementView: AdvertisementView
@@ -102,37 +103,41 @@ public class AdvertisementViewController: UIViewController {
     weak var delegate: AdvertisementViewControllerDelegate?
 
     private let id: String
-    private let advertisementTimeable: AdvertisementTimeable?
+//    private let advertisementTimeable: AdvertisementTimeable?
+    @Binding private var showAd: Bool
     private var cancellables: Set<AnyCancellable>
     
     @available(iOS 13.0, *)
     init(
         _ id: String,
-        _ advertisementTimeable: AdvertisementTimeable?
+//        _ advertisementTimeable: AdvertisementTimeable?
+        _ showAd: Binding<Bool>
     ) {
         self.id = id
-        self.advertisementTimeable = advertisementTimeable
+//        self.advertisementTimeable = advertisementTimeable
+        self._showAd = showAd
         self.cancellables = .init()
         super.init(nibName: nil, bundle: nil)
         
-        bind()
+//        bind()
+       
     }
     
-    private func bind() {
-        guard
-            let timeable = advertisementTimeable,
-            let dateNow = advertisementTimeable?.showAfter
-        else { return }
-        loop
-            .schedule(
-                after: .init(dateNow),
-                interval: .seconds(timeable.intervalSeconds)
-            ) { [weak self] in
-                self?.delegate?.automaticallyShowAd()
-                self?.configureManager()
-            }
-            .store(in: &cancellables)
-    }
+//    private func bind() {
+////        guard
+////            let timeable = advertisementTimeable,
+////            let dateNow = advertisementTimeable?.showAfter
+////        else { return }
+//        loop
+//            .schedule(
+//                after: .init(dateNow),
+//                interval: .seconds(timeable.intervalSeconds)
+//            ) { [weak self] in
+//                self?.delegate?.automaticallyShowAd()
+//                self?.configureManager()
+//            }
+//            .store(in: &cancellables)
+//    }
     
     private let loop = RunLoop.main
 
@@ -142,9 +147,12 @@ public class AdvertisementViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        if advertisementTimeable == nil {
+//        if advertisementTimeable == nil {
             configureManager()
-        }
+//        }
+
+        print(showAd)
+        print($showAd)
     }
 
     private var interstitial: GADInterstitialAd?
