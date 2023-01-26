@@ -22,12 +22,12 @@ extension AdvertisementTimeable {
 public struct AdvertisementView: UIViewControllerRepresentable {
     public let id: String
 //    public let advertisementTimeable: AdvertisementTimeable?
-    public var showAdSubject: PassthroughSubject<Bool, Never>
+    public var showAdPublisher: AnyPublisher<Bool, Never>
     public let adVertisementIsClosed: (Bool) -> Void
     
-    public init(id: String, showAdSubject: PassthroughSubject<Bool, Never>, adVertisementIsClosed: @escaping (Bool) -> Void) {
+    public init(id: String, showAdPublisher: AnyPublisher<Bool, Never>, adVertisementIsClosed: @escaping (Bool) -> Void) {
         self.id = id
-        self.showAdSubject = showAdSubject
+        self.showAdPublisher = showAdPublisher
         self.adVertisementIsClosed = adVertisementIsClosed
         
     }
@@ -69,7 +69,7 @@ public struct AdvertisementView: UIViewControllerRepresentable {
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(
             id,
-            showAdSubject.eraseToAnyPublisher()
+            showAdPublisher
         )
         viewController.delegate = context.coordinator
         return viewController
