@@ -29,6 +29,8 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         self.id = id
         self._showAd = showAd
         self.adVertisementIsClosed = adVertisementIsClosed
+        
+        opacity(0.5)
     }
     
 //    public init(

@@ -14,8 +14,8 @@
             filePath = "Sources/AKAGoogleAdMob/AdvertisementView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "AdvertisementView"
             landmarkType = "14">
          </BreakpointContent>
@@ -30,10 +30,10 @@
             filePath = "Sources/AKAGoogleAdMob/AdvertisementView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "makeUIViewController(context:)"
-            landmarkType = "7">
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "AdvertisementView"
+            landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
