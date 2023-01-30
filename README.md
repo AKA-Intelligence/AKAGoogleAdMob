@@ -282,12 +282,13 @@ For test you can use this Ad unit: "ca-app-pub-3940256099942544/4411468910"
 + For SwiftUI
 ```swift
 
-AdvertisementView(
-    for: "Put your Ad unit here",
-    tapDismiss: {
-       self.isAdvertisementOpen = false
+ AdvertisementView(
+     id: "Put your Ad unit here",
+     showAdPublisher: viewModel.$configurateAd.eraseToAnyPublisher(),
+     adVertisementIsClosed: { isAdClosed in
+          viewModel.setConfigurateAd(!isAdClosed)
 })
-.hide(!isAdvertisementOpen)
+.hide(!viewModel.configurateAd)
 
 ```
 
