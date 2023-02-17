@@ -23,7 +23,7 @@ public enum AdvertisementType {
 }
 
 public enum AdvertisementViewState {
-    case rewarded, closed
+    case rewarded, closed, presented
 }
 
 public struct AdvertisementView: UIViewControllerRepresentable {
@@ -65,6 +65,10 @@ public struct AdvertisementView: UIViewControllerRepresentable {
                                     AdvertisementViewControllerDelegate,
                                     RewardedAdViewControllerDelegate {
         
+        public func adWillPresentFullScreenContent() {
+            advertisementView.state = .presented
+        }
+        
         public func userDidEarnReward() {
             advertisementView.state = .rewarded
         }
@@ -83,6 +87,7 @@ public struct AdvertisementView: UIViewControllerRepresentable {
 
 public protocol AdvertisementViewControllerDelegate: AnyObject {
     func adDidDismissFullScreenContent()
+    func adWillPresentFullScreenContent()
 }
 
 public protocol RewardedAdViewControllerDelegate: AnyObject {

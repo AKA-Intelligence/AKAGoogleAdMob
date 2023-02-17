@@ -14,8 +14,8 @@
             filePath = "Sources/AKAGoogleAdMob/AdvertisementView.swift"
             startingColumnNumber = "23"
             endingColumnNumber = "23"
-            startingLineNumber = "152"
-            endingLineNumber = "152"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "configureRewarded()"
             landmarkType = "7">
          </BreakpointContent>
