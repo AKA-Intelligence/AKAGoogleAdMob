@@ -166,6 +166,7 @@ public class AdvertisementViewController: UIViewController {
                         guard let self = self else { return }
                         self.rewardedDelegate?.userDidEarnReward()
                 })
+                self.rewarded?.fullScreenContentDelegate = self
                 
             case .failure(let error):
                 print(error)
