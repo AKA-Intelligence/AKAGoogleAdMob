@@ -3,22 +3,4 @@
    uuid = "BAB864A6-59FF-460D-9A1C-7987830595DA"
    type = "1"
    version = "2.0">
-   <Breakpoints>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AF0D9365-1EC5-4F8A-A7E9-770A9D614A4D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Sources/AKAGoogleAdMob/AdvertisementView.swift"
-            startingColumnNumber = "23"
-            endingColumnNumber = "23"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "configureRewarded()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-   </Breakpoints>
 </Bucket>
