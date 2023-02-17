@@ -18,23 +18,39 @@ extension AdvertisementTimeable {
     }
 }
 
-@available(iOS 13.0, *)
+public enum AdvertisementType {
+    case interstitial, reward
+}
+
+public enum AdvertisementViewState {
+    case rewarded, closed
+}
+
 public struct AdvertisementView: UIViewControllerRepresentable {
+    public let type: AdvertisementType
     public let id: String
     public var showAdPublisher: AnyPublisher<Bool, Never>
-    public let adVertisementIsClosed: (Bool) -> Void
+    @Binding public var state: AdvertisementViewState?
     
-    public init(id: String, showAdPublisher: AnyPublisher<Bool, Never>, adVertisementIsClosed: @escaping (Bool) -> Void) {
+    public init(
+        type: AdvertisementType,
+        id: String,
+        showAdPublisher: AnyPublisher<Bool, Never>,
+        state: Binding<AdvertisementViewState?> = .constant(nil)
+    ) {
+        self.type = type
         self.id = id
         self.showAdPublisher = showAdPublisher
-        self.adVertisementIsClosed = adVertisementIsClosed
+        _state = state
     }
     
     public func makeUIViewController(context: Context) -> AdvertisementViewController {
         let viewController = AdvertisementViewController(
+            type,
             id,
             showAdPublisher
         )
+        viewController.rewardedDelegate = context.coordinator
         viewController.delegate = context.coordinator
         return viewController
     }
@@ -45,10 +61,16 @@ public struct AdvertisementView: UIViewControllerRepresentable {
         Coordinator(self)
     }
 
-    final public class Coordinator: NSObject, AdvertisementViewControllerDelegate {
-        // MARK: - AdvertisementViewControllerDelegate
+    final public class Coordinator: NSObject,
+                                    AdvertisementViewControllerDelegate,
+                                    RewardedAdViewControllerDelegate {
+        
+        public func userDidEarnReward() {
+            advertisementView.state = .rewarded
+        }
+        
         public func adDidDismissFullScreenContent() {
-            advertisementView.adVertisementIsClosed(true)
+            advertisementView.state = .closed
         }
 
         private let advertisementView: AdvertisementView
@@ -63,33 +85,44 @@ public protocol AdvertisementViewControllerDelegate: AnyObject {
     func adDidDismissFullScreenContent()
 }
 
-@available(iOS 13.0, *)
+public protocol RewardedAdViewControllerDelegate: AnyObject {
+    func userDidEarnReward()
+}
+
 public class AdvertisementViewController: UIViewController {
 
     weak var delegate: AdvertisementViewControllerDelegate?
+    weak var rewardedDelegate: RewardedAdViewControllerDelegate?
 
+    private let type: AdvertisementType
     private let id: String
     private var showAdPublisher: AnyPublisher<Bool, Never>
     private var cancellables: Set<AnyCancellable>
     
-    @available(iOS 13.0, *)
     init(
+        _ type: AdvertisementType,
         _ id: String,
         _ showAdPublisher: AnyPublisher<Bool, Never>
     ) {
+        self.type = type
         self.id = id
         self.showAdPublisher = showAdPublisher
         self.cancellables = .init()
         super.init(nibName: nil, bundle: nil)
         
-//        bind()
-        showAdPublisher.sink {[weak self] needToShow in
-            guard let self = self else { return }
-            if needToShow {
-                self.configureManager()
+        showAdPublisher
+            .sink {[weak self] needToShow in
+                guard let self = self else { return }
+                if needToShow {
+                    switch type {
+                    case .reward:
+                        self.configureRewarded()
+                    case .interstitial:
+                        self.configureInterstitial()
+                    }
+                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
     }
     
     required init?(coder: NSCoder) {
@@ -97,10 +130,11 @@ public class AdvertisementViewController: UIViewController {
     }
     
     private var interstitial: GADInterstitialAd?
+    private var rewarded: GADRewardedAd?
 
-    private func configureManager() {
+    private func configureInterstitial() {
         let manager = GoogleAdMobManager()
-        manager.create(with: id) {[weak self] result in
+        manager.createInterstial(with: id) {[weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let ad):
@@ -113,10 +147,29 @@ public class AdvertisementViewController: UIViewController {
             }
         }
     }
+    
+    private func configureRewarded() {
+        let manager = GoogleAdMobManager()
+        manager.createRewarded(with: id) {[weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let ad):
+                self.rewarded = ad
+                self.rewarded?.present(
+                    fromRootViewController: self,
+                    userDidEarnRewardHandler: {[weak self] in
+                        guard let self = self else { return }
+                        self.rewardedDelegate?.userDidEarnReward()
+                })
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 //MARK: - GADFullScreenContentDelegate
-@available(iOS 13.0, *)
 extension AdvertisementViewController: GADFullScreenContentDelegate {
     /// Tells the delegate that the ad failed to present full screen content.
     public func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
