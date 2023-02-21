@@ -144,8 +144,8 @@ public class AdvertisementViewController: UIViewController {
             switch result {
             case .success(let ad):
                 self.interstitial = ad
-                self.interstitial?.present(fromRootViewController: self)
                 self.interstitial?.fullScreenContentDelegate = self
+                self.interstitial?.present(fromRootViewController: self)
                 
             case .failure(let error):
                 print(error)
@@ -160,13 +160,13 @@ public class AdvertisementViewController: UIViewController {
             switch result {
             case .success(let ad):
                 self.rewarded = ad
+                self.rewarded?.fullScreenContentDelegate = self
                 self.rewarded?.present(
                     fromRootViewController: self,
                     userDidEarnRewardHandler: {[weak self] in
                         guard let self = self else { return }
                         self.rewardedDelegate?.userDidEarnReward()
                 })
-                self.rewarded?.fullScreenContentDelegate = self
                 
             case .failure(let error):
                 print(error)
