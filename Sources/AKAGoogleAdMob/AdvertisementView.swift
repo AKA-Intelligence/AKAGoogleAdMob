@@ -184,7 +184,6 @@ extension AdvertisementViewController: GADFullScreenContentDelegate {
 
     /// Tells the delegate that the ad will present full screen content.
     public func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-//        print("Ad will present full screen content.")
         delegate?.adWillPresentFullScreenContent()
     }
 
