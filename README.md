@@ -282,13 +282,18 @@ For test you can use this Ad unit: "ca-app-pub-3940256099942544/4411468910"
 + For SwiftUI
 ```swift
 
- AdvertisementView(
-     id: "Put your Ad unit here",
-     showAdPublisher: viewModel.$configurateAd.eraseToAnyPublisher(),
-     adVertisementIsClosed: { isAdClosed in
-          viewModel.setConfigurateAd(!isAdClosed)
-})
-.hide(!viewModel.configurateAd)
+AdvertisementView(
+     type: .reward or .interstitial,
+     id:  "Put your Ad unit here",
+     showAdPublisher: viewModel.$showAd.eraseToAnyPublisher(),
+     state $viewModel.rewardedState
+)
+.hide(!viewModel.showAd)
+
+class ViewModel: ObservableObject {
+    @Published private(set) var showAd = false
+    @Published var rewardedState: AdvertisementViewState? // or  @Published var interstitialState: AdvertisementViewState?
+}
 
 ```
 ## Expecting Issues
