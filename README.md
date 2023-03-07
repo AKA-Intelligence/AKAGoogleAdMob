@@ -297,6 +297,7 @@ if following issue happens:
 Thread 2: "The Google Mobile Ads SDK was initialized without AppMeasurement. Google AdMob publishers, follow instructions here: https://googlemobileadssdk.page.link/admob-ios-update-plist to include the AppMeasurement framework and set the -ObjC linker flag. Google Ad Manager publishers, follow instructions here: https://googlemobileadssdk.page.link/ad-manager-ios-update-plist"
 
 please set like this:
+
 ![스크린샷 2023-03-07 오전 11 56 58](https://user-images.githubusercontent.com/101777374/223309624-a5d9dc31-82bd-42a0-a9e1-a60183585002.png)
 
 
